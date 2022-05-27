@@ -43,8 +43,8 @@ export default function EmployeeLeaves() {
             handleEmployeeLeaves()
         }
 
-
     }
+
     return (
         <div className="row position-relative">
             <div className="d-flex justify-content-between align-items-center sticky-top bg-secondary py-3 px-4">
@@ -52,10 +52,17 @@ export default function EmployeeLeaves() {
                 <Link to={"/"} role="button" className="btn-close" />
             </div>
 
+            
+
             <div className="mt-3 py-1 px-4">
                 <ul className="list-group">
                     {
                         leaves && leaves.map(el => {
+                            let ActionButtons = <div className="d-flex align-items-center gap-2 my-3">
+                            <button className="btn btn-primary w-100" onClick={(e) => { handleLeaveStatus(el["Record ID"], "Approved",e) }}>Accept</button>
+                            <button className="btn btn-danger w-100" onClick={(e) => { handleLeaveStatus(el["Record ID"], "Rejected",e) }}>Reject</button>
+                            </div>;
+
                             return (
                                 <li className="list-group-item" key={el["Record ID"]}>
                                     <h4>{el["Leave Reason"]}</h4>
@@ -67,11 +74,8 @@ export default function EmployeeLeaves() {
                                     <p className="my-0">Number of Days: {el["Number of Days"]}</p>
                                     <p className="my-0">Leave Type: {el["Leave Type"]}</p>
                                     <p className="my-0">Status: {el["Status"] === undefined ? "Pending" : el["Status"]}</p>
-
-                                    <div className="d-flex align-items-center gap-2 my-3">
-                                        <button className="btn btn-primary w-100" onClick={(e) => { handleLeaveStatus(el["Record ID"], "Approved",e) }}>Accept</button>
-                                        <button className="btn btn-danger w-100" onClick={(e) => { handleLeaveStatus(el["Record ID"], "Rejected",e) }}>Reject</button>
-                                    </div>
+                                        
+                                    {el["Status"] === undefined ? ActionButtons : ""}
                                 </li>
                             )
                         })
