@@ -8,12 +8,10 @@ export function handleLogout(event) {
 }
 
 export async function handleGetUserDetails(){
-    var response = await fetch("http://localhost:5000/api/user",{
+    var response = await fetch("https://115q5lk5gk.execute-api.ap-south-1.amazonaws.com/prod/get-user-details",{
         mode: 'cors',
-        method: "GET",
-        headers:{
-            "token":sessionStorage.getItem("token")
-        }
+        method: "POST",
+        body:JSON.stringify({"token":sessionStorage.getItem("token")})
     });
     response = await response.json();
     sessionStorage.setItem("user",JSON.stringify(response.data.fields));
@@ -30,7 +28,7 @@ export function Navbar() {
     return (
         <nav className="navbar navbar-dark bg-dark sticky-top">
             <div className="container-fluid">
-                <Link to="/" className="navbar-brand text-warning">Leave NOW!</Link>
+                <Link to="/" className="navbar-brand text-warning">Ajency.in Leave App</Link>
             </div>
         </nav>
     )
@@ -50,7 +48,7 @@ export function ApplyLeaveModal() {
         };
 
         try {
-            var response = await fetch("http://localhost:5000/api/leaves", {
+            var response = await fetch("https://115q5lk5gk.execute-api.ap-south-1.amazonaws.com/prod/apply-leave", {
                 mode: 'cors',
                 body: JSON.stringify(postData),
                 method: "POST",

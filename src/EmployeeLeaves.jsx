@@ -6,12 +6,10 @@ export default function EmployeeLeaves() {
     var [leaves, setLeaves] = useState();
     async function handleEmployeeLeaves() {
         try {
-            var response = await fetch("http://localhost:5000/api/leaves/all", {
-                method: "GET",
+            var response = await fetch("https://115q5lk5gk.execute-api.ap-south-1.amazonaws.com/prod/get-employee-leaves", {
+                method: "POST",
                 mode: "cors",
-                headers: {
-                    token: sessionStorage.getItem("token")
-                }
+                body: JSON.stringify({token: sessionStorage.getItem("token")})
             });
             if(response.status === 401) navigate("/")
             response = await response.json();
@@ -25,16 +23,18 @@ export default function EmployeeLeaves() {
     },[])
 
     async function handleLeaveStatus(id, status, event) {
+        event.target.lastChild.classList.remove("d-none")
+        
         let postData = {
             "id": id,
-            "status": status
+            "status": status,
+            "token": sessionStorage.getItem("token")
         }
-        var response = await fetch("http://localhost:5000/api/leaves/status",{
+        var response = await fetch("https://115q5lk5gk.execute-api.ap-south-1.amazonaws.com/prod/set-leave-status",{
             method: "POST",
             mode: "cors",
             body: JSON.stringify(postData),
             headers:{
-                token: sessionStorage.getItem("token"),
                 "Content-Type": "application/json"
             }
         });
@@ -59,8 +59,14 @@ export default function EmployeeLeaves() {
                     {
                         leaves && leaves.map(el => {
                             let ActionButtons = <div className="d-flex align-items-center gap-2 my-3">
-                            <button className="btn btn-primary w-100" onClick={(e) => { handleLeaveStatus(el["Record ID"], "Approved",e) }}>Accept</button>
-                            <button className="btn btn-danger w-100" onClick={(e) => { handleLeaveStatus(el["Record ID"], "Rejected",e) }}>Reject</button>
+                            <button className="btn btn-primary w-100" onClick={(e) => { handleLeaveStatus(el["Record ID"], "Approved",e) }}>
+                                <span>Accept</span>
+                                <span className="spinner-border spinner-border-sm text-light ms-2 d-none"></span>
+                            </button>
+                            <button className="btn btn-danger w-100" onClick={(e) => { handleLeaveStatus(el["Record ID"], "Rejected",e) }}>
+                                <span>Reject</span>
+                                <span className="spinner-border spinner-border-sm text-light ms-2 d-none"></span>
+                            </button>
                             </div>;
 
                             return (

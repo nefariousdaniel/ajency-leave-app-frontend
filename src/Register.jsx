@@ -17,7 +17,7 @@ function Register() {
         }
 
         try{
-            let result = await fetch("http://localhost:5000/api/register",{
+            let result = await fetch("https://115q5lk5gk.execute-api.ap-south-1.amazonaws.com/prod/register",{
                 method: "POST",
                 mode: "cors",
                 body: JSON.stringify(postData),

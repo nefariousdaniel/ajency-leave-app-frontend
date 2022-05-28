@@ -14,11 +14,11 @@ function Login() {
             password: event.target[1].value
         }
 
-        var response = await fetch("http://localhost:5000/api/login",{
+        var response = await fetch("https://115q5lk5gk.execute-api.ap-south-1.amazonaws.com/prod/login",{
+            method: "POST",
             mode: 'cors',
             body:JSON.stringify(postData),
-            method: "POST",
-            headers:{
+            headers:{   
                 "Content-Type":"application/json"
             }
         });
