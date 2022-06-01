@@ -24,14 +24,14 @@ function Login() {
         });
         event.target[2].childNodes[1].classList.toggle("d-none")
         event.target[2].removeAttribute("disabled","")
-        if(response.status === 200){
-            response = await response.json();
+        response = await response.json();
+        if(response.statusCode === 200){
             sessionStorage.setItem("token",response.token)
             sessionStorage.setItem("user",JSON.stringify(response.data.fields));
             navigate("/");
             return;
         }
-        alert("Something Went Horribly Wrong");
+        alert(response.message);
         return;
         
     }
