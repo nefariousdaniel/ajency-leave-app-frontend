@@ -8,13 +8,15 @@ export function handleLogout(event) {
 }
 
 export async function handleGetUserDetails(){
-    var response = await fetch("https://115q5lk5gk.execute-api.ap-south-1.amazonaws.com/prod/get-user-details",{
+    var response = await fetch("https://leave-api-server.herokuapp.com/api/user/fetchUserDetails",{
         mode: 'cors',
-        method: "POST",
-        body:JSON.stringify({"token":sessionStorage.getItem("token")})
+        method: "GET",
+        headers:{
+            "authorization": `Bearer ${sessionStorage.getItem("token")}`
+        },
     });
     response = await response.json();
-    sessionStorage.setItem("user",JSON.stringify(response.data.fields));
+    sessionStorage.setItem("user",JSON.stringify(response.data));
 }
 
 export function Navbar() {
@@ -43,17 +45,17 @@ export function ApplyLeaveModal() {
         var postData = {
             "startDate": event.target[0].value,
             "endDate": event.target[1].value,
-            "reason": event.target[2].value,
-            "token": sessionStorage.getItem("token")
+            "reason": event.target[2].value === ""? "No reason Specified." : event.target[2].value,
         };
 
         try {
-            var response = await fetch("https://115q5lk5gk.execute-api.ap-south-1.amazonaws.com/prod/apply-leave", {
+            var response = await fetch("https://leave-api-server.herokuapp.com/api/leaves/requestLeave", {
                 mode: 'cors',
                 body: JSON.stringify(postData),
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "authorization":`Bearer ${sessionStorage.getItem("token")}`
                 }
             });
             response = await response.json();
@@ -88,7 +90,7 @@ export function ApplyLeaveModal() {
                 </div>
                 <div className="mb-3">
                     <label htmlFor="reason" className="form-label">Reason</label>
-                    <input type="text" className="form-control" id="reason" required ></input>
+                    <input type="text" className="form-control" id="reason" placeholder="Optional" ></input>
                 </div>
                 <div className="d-flex justify-content-between">
                     <button className="btn btn-danger" onClick={(e) => { e.preventDefault(); document.querySelector("#ApplyLeaveModal").close() }}>Cancel</button>

@@ -1,5 +1,7 @@
+import {useNavigate} from "react-router-dom"
 function Register() {
 
+    var navigate = useNavigate();
     async function handleRegister(event) {
         event.preventDefault();
         if(event.target[2].value !== event.target[3].value){
@@ -17,7 +19,7 @@ function Register() {
         }
 
         try{
-            let result = await fetch("https://115q5lk5gk.execute-api.ap-south-1.amazonaws.com/prod/register",{
+            let result = await fetch("https://leave-api-server.herokuapp.com/api/register",{
                 method: "POST",
                 mode: "cors",
                 body: JSON.stringify(postData),
@@ -27,7 +29,12 @@ function Register() {
             });
             result = await result.json();
             alert(result.message)
+            if(result.statusCode === 200){
+                navigate("/")
+            }
+
         } catch(e) {
+            console.log(e)
             alert("Something went wrong");
         }
         

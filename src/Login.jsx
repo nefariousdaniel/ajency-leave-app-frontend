@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { handleGetUserDetails } from "./Components"
 
 function Login() {
 
@@ -14,7 +15,7 @@ function Login() {
             password: event.target[1].value
         }
 
-        var response = await fetch("https://115q5lk5gk.execute-api.ap-south-1.amazonaws.com/prod/login",{
+        var response = await fetch("https://leave-api-server.herokuapp.com/api/login",{
             method: "POST",
             mode: 'cors',
             body:JSON.stringify(postData),
@@ -27,7 +28,7 @@ function Login() {
         response = await response.json();
         if(response.statusCode === 200){
             sessionStorage.setItem("token",response.token)
-            sessionStorage.setItem("user",JSON.stringify(response.data.fields));
+            await handleGetUserDetails();
             navigate("/");
             return;
         }
