@@ -24,9 +24,7 @@ export default function EmployeeLeaves() {
         handleEmployeeLeaves();
     },[])
 
-    async function handleLeaveStatus(id, status, event) {
-        event.target.lastChild.classList.remove("d-none")
-        
+    async function handleLeaveStatus(id, status, event) {        
         let postData = {
             "id": id,
             "status": status,
