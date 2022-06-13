@@ -16,7 +16,7 @@ function App() {
     }
   }
 
-  if (user !== null || "" || undefined) {
+  if (user !== null || "" || undefined || "undefined") {
     return (
       <div className="container py-5">
         <div className="card col-12">

@@ -16,7 +16,9 @@ export async function handleGetUserDetails(){
         },
     });
     response = await response.json();
-    sessionStorage.setItem("user",JSON.stringify(response.data));
+    if(response.statusCode === 200){
+        sessionStorage.setItem("user",JSON.stringify(response.data));
+    }
 }
 
 export function Navbar() {
