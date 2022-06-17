@@ -30,7 +30,7 @@ function Register() {
             result = await result.json();
             alert(result.message)
             if(result.statusCode === 200){
-                navigate("/")
+                navigate("/login")
             }
 
         } catch(e) {
